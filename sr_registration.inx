@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+	<_name>Registration Marks</_name>
+	<!-- id should be unique. Associates entered values with this menu -->
+	<id>githubacct.2286202.registration</id>
+	<!-- mention a dependency here and will check for existence (optional)-->
+	<dependency type="executable" location="extensions">sr_registration.py</dependency>
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+
+	<!-- start notebook -->
+	<param name='active-tab' type="notebook">
+		<!-- one per page(tab) - unique names. Can discover which page in program-->
+		<page name="title" _gui-text="Create">
+			
+            
+            <param name="unit" _gui-text="Unit" type="enum">
+                <_item value="in">in</_item>
+				<_item value="mm">mm</_item>
+                <_item value="cm">cm</_item>
+                <_item value="px">px</_item>
+            </param>
+         	<!--this stuff is in inches!   -->
+            <param name="reg_offset" type="float" precision="2"  _gui-text="Registration offset from center" min="0" max="5">1.5</param>
+            <param name="reg_size" type="float" precision="2" _gui-text="Registration size" min=".125" max="1">0.5</param>
+            <param name="reg_line_width" type="float" precision="2" _gui-text="Registration line width" min="0.001" max="0.1">0.01</param>
+      		<!--<param name="debug" type="boolean" _gui-text="Debug Messages" _gui-description="Check this to turn on debug messages">false</param>-->
+			<!---->
+            
+		</page>
+				<page name="Usage2" _gui-text="Help">
+			<_param name="use2" type="description" xml:space="preserve">
+
+On this page we talk about how to use this extension...
+
+Click apply and two registration marks will magically appear.
+Offset is how far apart vertically they are.  Size is how big the +s are.
+
+
+
+
+
+
+
+			</_param>
+		</page>
+
+		<!-- next tab -->
+		<page name="Usage2" _gui-text="About">
+			<_param name="use2" type="description" xml:space="preserve">
+
+This extension will generate registration marks
+
+It is a work in progress.
+Brian Wagner brian@tegrasys.com
+Project started 2/5/17...
+
+			</_param>
+		</page>
+	</param>
+	<!-- classify which menu it appears under - can be new name -->
+	<effect>
+	<object-type>all</object-type>
+		<effects-menu>
+			<submenu _name="Soft Robots"/> <!-- which menu under Extensions -->
+		</effects-menu>
+	</effect>
+	<!-- py file again -->
+	<script>
+		<command reldir="extensions" interpreter="python">sr_registration.py</command>
+	</script>
+</inkscape-extension>
