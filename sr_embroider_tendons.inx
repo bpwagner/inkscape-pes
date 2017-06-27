@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+	<!-- _name must have same name as .py file but capitalise it. Shows on Menu this way-->
+	<_name>Generate Embroidery File</_name>
+	<!-- id should be unique. Associates entered values with this menu -->
+	<id>githubacct.2286202.tendons</id>
+	<!-- mention a dependency here and will check for existence (optional)-->
+	<dependency type="executable" location="extensions">sr_embroider_tendons.py</dependency>
+	<!--<dependency type="executable" location="extensions">simplestyle.py</dependency>-->
+
+	<!-- start notebook -->
+	<param name='active-tab' type="notebook">
+		<!-- one per page(tab) - unique names. Can discover which page in program-->
+		<page name="title" _gui-text="Create">
+			<_param name="dash1"   type="description" xml:space="preserve">The units here are inches!</_param>
+			<!--<param name="GenSTL" type="boolean" _gui-text="Generate 3D STL print to hold tendons.">false</param>-->
+			<!--<param name="GenLaser" type="boolean" _gui-text="Generate Laser Cut Objects to hold tendons.">false</param>-->
+			<!--<param name="GenStitch" type="boolean" _gui-text="Generate Brother Embroidery stitch file.">false</param>-->
+			<param name="r1x" type="float" precision="2"  _gui-text="Registration 1 offset x" min="-1.77" max="1.77">0.0</param>
+			<param name="r1y" type="float" precision="2"  _gui-text="Registration 1 offset y" min="-3.33" max="3.33">1.0</param>
+			<param name="r2x" type="float" precision="2"  _gui-text="Registration 2 offset x" min="-1.77" max="1.77">0.0</param>
+			<param name="r2y" type="float" precision="2"  _gui-text="Registration 2 offset y" min="-3.33" max="3.33">-1.0</param>
+			<param name="zigzag" type="boolean" _gui-text="zigzag stitch" _gui-description="Check this to create zigzag stitch instead of stright stitch">false</param>
+			<param name="thread_offset" type="float" precision="2"  _gui-text="Thread offset for zigzag stitch" min="-.5" max=".5">.125</param>
+			<_param name="dash2"   type="description" xml:space="preserve">------------------------------</_param>
+			<param name="filename" type="string" _gui-text="Filename:">inkscape.pes</param>
+			<param name="dir" type="string" _gui-text="Directory:">c:\pesfolder\</param>
+			<param name="overwrite" type="boolean" _gui-text="Overwrite File" _gui-description="Check this to overwrite file">false</param>
+			<_param name="dash3"   type="description" xml:space="preserve">------------------------------</_param>
+			<param name="debug" type="boolean" _gui-text="Debug Messages" _gui-description="Check this to turn on debug messages">false</param>
+
+		</page>
+		<page name="Usage2" _gui-text="Help">
+			<_param name="use2" type="description" xml:space="preserve">
+
+For this extension, both the resgistration marks and
+the paths you want to generate need to be on the
+first level, Level1.
+
+Make sure you have your path selected
+
+Your filename and directory path should not have any spaces in them.
+End your directory with a / (or \ for Windows)
+e.g Create a pesfolder on C: to save to c:\pesfolder
+
+
+
+
+
+
+			</_param>
+		</page>
+
+		<!-- next tab -->
+		<page name="Usage2" _gui-text="About">
+			<_param name="use2" type="description" xml:space="preserve">
+
+This extension will generate the files necessary to stitch
+a tendon onto water soluable plastic so it can be used on
+soft robot pojects.
+
+It generates a stl of a 3d printed part to place the tendon and/or
+a laser generated cutout to hold the tendon and
+a file to use for a Brother embroidery machine.
+
+It is a work in progress.
+Brian Wagner brian@tegrasys.com
+Project started 2/5/17...
+
+			</_param>
+		</page>
+	</param>
+	<!-- classify which menu it appears under - can be new name -->
+	<effect>
+	<object-type>all</object-type>
+		<effects-menu>
+			<submenu _name="Soft Robots"/> <!-- which menu under Extensions -->
+		</effects-menu>
+	</effect>
+	<!-- py file again -->
+	<script>
+		<command reldir="extensions" interpreter="python">sr_embroider_tendons.py</command>
+	</script>
+</inkscape-extension>

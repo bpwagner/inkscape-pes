@@ -2,21 +2,25 @@ import numpy as np
 import inkex
 
 
-def jumpit(displ):
+def jumpit(displ, canPrint = True):
     if displ >= 0:  # positive jump
-        print 'positive jumpit', displ
+        if canPrint:
+            print 'positive jumpit', displ
         # check here for jump too large, 8*256 or 2048 (204.8 mm) and above are too large
         if displ > 2047:
-            print "Error, jump greater than 204.7 mm found"
+            if canPrint:
+                print "Error, jump greater than 204.7 mm found"
         msb = np.trunc(displ / 256)
         lsb = np.trunc(displ - msb * 256)
         firstbyte = 128 + msb
         secondbyte = lsb
         return int(firstbyte), int(secondbyte)
     else:  # negative jump
-        print 'negative jumpit', displ
+        if canPrint:
+            print 'negative jumpit', displ
         if displ < -2047:
-            print "Error, jump greater than 204.7 mm found"
+            if canPrint:
+                print "Error, jump greater than 204.7 mm found"
         msb = 15 - np.trunc(displ / 256)
         lsb = 256 + np.trunc(displ - np.trunc(displ / 256))  # need to check this
         firstbyte = 128 + msb
@@ -24,10 +28,11 @@ def jumpit(displ):
         return int(firstbyte), int(secondbyte)
 
 
-def msb8(st):
+def msb8(st, canPrint = True):
     st = int(st) * 10
     if np.abs(st) > 32767:
-        print "warning: stitch found more than 32.7 cm from origin, pattern too large"
+        if canPrint:
+            print "warning: stitch found more than 32.7 cm from origin, pattern too large"
         return np.uint8(127 * np.sign(st))  # just assign it the max value
     else:
         return np.uint8(np.trunc(st / 256))
@@ -49,7 +54,7 @@ def stitchdisp(s):
 
 
 
-def make_pes(path, filename, new_pts):
+def make_pes(path, filename, new_pts, canPrint = True):
     # make a PES file.  Most of this code is from Dr. Cindy Harnett, U of L
     # new_points are already scaled and rotated so we skip that part in her
     # code.
@@ -63,8 +68,9 @@ def make_pes(path, filename, new_pts):
 
     xsize = (np.max(inputx) - (np.min(inputx) + 2)) * 10 # * np.abs(shift[0])  ##new CKH Mar 4 2017 pesky bounding box problem workaround
     ysize = (np.max(inputy) - (np.min(inputy) + 2)) * 10 # * np.abs(shift[1])
-    print 'xsize', xsize
-    print 'ysize', ysize
+    if canPrint:
+        print 'xsize', xsize
+        print 'ysize', ysize
     YsizeMSB = int(np.trunc(ysize / 256))
     YsizeLSB = int(ysize - 256 * YsizeMSB)
     XsizeMSB = int(np.trunc(xsize / 256))
@@ -86,14 +92,23 @@ def make_pes(path, filename, new_pts):
     # Bytes 0-7 are a header
     #PESdatastart = [35, 80, 69, 83, 48, 48, 48, 49]  # writes #PES0001 at start of file
     #in hex
+
+    #0000 - 0007
     PESdatastart = [0x23, 0x50, 0x45, 0x53, 0x30, 0x30, 0x30, 0x31]
 
     # Bytes 8, 9 and 10 give location data for the graphics. I will come back to it later on.
+    #0008 - 000A  byte 11 should be part of this...
     PESsection1 = [0, 0, 0]
     # bytes 0x08 - 0x0b uint32 offset for pec file
 
     #
     #  Bytes 11 through 30
+    #000B -
+    #000C, 000D - hoop size 00 00 means 100x100
+    #000E, 000F - 1,0 unknown
+    #0010-0011 # of stitch goups - in this case 1
+    #0012-0015 - 255, 255, 0,0 section break
+    #the rest is 7 0 CEmbOne
     PESsection2 = [0, 0, 0, 1, 0, 1, 0, 255, 255, 0, 0, 7, 0, 67, 69, 109, 98, 79, 110, 101]  # 7 0 CEmbOne
     # The pattern seems consistent between different files
     # this section seem to be the name, catagory, author, keywords, comments strings
@@ -115,12 +130,15 @@ def make_pes(path, filename, new_pts):
     maxXLSB = int(np.max(1000 + inputx) - 256 * maxXMSB)
     maxYMSB = int(np.trunc(np.max(1000 + inputy) / 256))
     maxYLSB = int(np.max(1000 + inputy) - 256 * maxYMSB)
+
+    #CEmbOne block
+    #001F - 0026 - min max xy
     PESsection3 = [minXLSB, minXMSB, minYLSB, minYMSB, maxXLSB, maxXMSB, maxYLSB, maxYMSB]
 
     PESsection3 = PESsection3 * 2  # Both files repeat the 8 bytes 2x
-
-    print 'PES3 [minXLSB, minXMSB, minYLSB, minYMSB, maxXLSB, maxXMSB, maxYLSB, maxYMSB]'
-    print PESsection3
+    if canPrint:
+        print 'PES3 [minXLSB, minXMSB, minYLSB, minYMSB, maxXLSB, maxXMSB, maxYLSB, maxYMSB]'
+        print PESsection3
     # Maybe they expect a bigger hoop in another version of the format
     # Meanwhile, the PE525 machine may be using this info to select a hoop but it IGNORES these XY endpoints
     # and puts the centroid of the bounding box at 0,0 during stitching
@@ -129,6 +147,10 @@ def make_pes(path, filename, new_pts):
 
     # Another consistent stretch between bytes 47 and 72, there's a discrepancy btw what Stitchbuddy
     # produces and what Trever Adams finds, he has 0,0,0,0,0,0,0,0 instead of 0,0, 122,68,0,0,122,68
+
+    # Stitch Group Data, scale and skew
+    # after the second 63 are 8 bytes are hoop width/height stuff - supposed to be 350+ HoopWidth/2 - width of design/2...
+    # final 1,0 is location 0032, 0033
     PESsection4 = [0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0];
 
     # PESsection5. ok except all my examples are for a centered design
@@ -163,6 +185,8 @@ def make_pes(path, filename, new_pts):
     PESsection7 = [0]  # "professionally designed files seem to have 1 here" (Trever Adams). But StitchBuddy puts 0.
 
     # PESsection 8, bytes 90-103 are consistent between files
+    #PES 7 and 8[0] are number of segments
+    #FF 00 end of section, CSewSeg next...
     PESsection8 = [0, 255, 255, 0, 0, 7, 0, 67, 83, 101, 119, 83, 101, 103]  # 0, section break [255 255 0 0] then 7 0 CSewSeg
 
     # PESsection 9 -different and different length between files!!!
@@ -191,7 +215,7 @@ def make_pes(path, filename, new_pts):
     stitchpile = np.array(zip(inputx, inputy)).flatten()
 
     # I used np.uint8(), this works to translate the negative numbers but it will wrap around, np.uint8(500) =12
-    PESsection11 = [byte for s in stitchpile for byte in [lsb8(s), msb8(s)]]  # create msb8 and lsb8 functions
+    PESsection11 = [byte for s in stitchpile for byte in [lsb8(s), msb8(s, canPrint)]]  # create msb8 and lsb8 functions
 
     # the order of operations is alien to me but it's like
     # (for s in stitchpile)  gets every x or y stitch coord and calls it s
@@ -242,13 +266,12 @@ def make_pes(path, filename, new_pts):
 
     # Then [XsizeLSB,XsizeMSB,YsizeLSB,YsizeMSB] #vx[pecstart+521:pecstart+525]
     PECsection6 = [XsizeLSB, XsizeMSB, YsizeLSB, YsizeMSB]
-    print 'x,y size:', PECsection6
+    if canPrint:
+        print 'x,y size:', PECsection6
 
     # the lowest x value is also the value of the initial jump
     # however the highest y value is not at the start
     # I need to move the pattern down by ysize/2-inputy[0]
-    #print inputx
-    #print inputy
 
     startXoff = (xsize / 2) - inputx[0]
     startYoff = (ysize / 2) - inputy[0]
@@ -256,20 +279,22 @@ def make_pes(path, filename, new_pts):
     # now I have to convert the last two byte pairs in PECsection7 to these offsets
     # using the jump stitch method
 
-    print 'startXoff', startXoff, 'startYoff', startYoff
+    if canPrint:
+        print 'startXoff', startXoff, 'startYoff', startYoff
 
-    xStart = jumpit(startXoff)
-    yStart = jumpit(startYoff)
+    xStart = jumpit(startXoff, canPrint)
+    yStart = jumpit(startYoff, canPrint)
 
-
-    print 'jumpit X', xStart[0], xStart[1]
-    print 'jumpit Y', yStart[0], yStart[1]
+    if canPrint:
+        print 'jumpit X', xStart[0], xStart[1]
+        print 'jumpit Y', yStart[0], yStart[1]
 
     # In PECsection7 the first 4 bytes are fixed and unknown meaning
     # and last 4 change where the design center winds up in StitchBuddy
     # [224,1,176,1, jump to X CENTER , rest of jump to X CENTER, jump to Y CENTER, rest of jump to Y CENTER]
     PECsection7 = [224, 1, 176, 1, xStart[0], xStart[1], yStart[0], yStart[1]]
-    print PECsection7
+    if canPrint:
+        print PECsection7
 
     diffx = np.diff(inputx)
     diffy = np.diff(inputy)
@@ -281,8 +306,8 @@ def make_pes(path, filename, new_pts):
     PECsection8 = [stitchdisp(s)[0] for s in diffpile]
     PECtoolongs = [stitchdisp(s)[1] for s in diffpile]  # save locations of any too-long stitches along with their lengths
     # PECsection8,PECtoolongs
-
-    print PECsection8
+    if canPrint:
+        print PECsection8
 
     # Then [255]
     PECsection9 = [255]  # end of stitch data. Achatina and Trever Adams has [255 0] but StitchBuddy leaves off the 0
@@ -544,37 +569,44 @@ def make_pes(path, filename, new_pts):
     # Check on the assembly of this vector because things have to be at known offsets
     NumColorLocError = len(vx) - pecstartValue - NumColorLocOffset
     if NumColorLocError:
-        print "Number of Colors location is off by"
-        print NumColorLocError
+        if canPrint:
+            print "Number of Colors location is off by"
+            print NumColorLocError
     else:
-        print "Number of Colors location is right"
+        if canPrint:
+            print "Number of Colors location is right"
 
     vx = vx + PECsection2  # Number of colors in file
     vx = vx + PECsection3  # A bunch of spaces (32s) until the location of the graphic pointer
     GraphicLoc = len(vx)
     GraphicLocError = GraphicLoc - pecstartValue - GraphicLocOffset
     if GraphicLocError:
-        print "Graphic location is off by"
-        print GraphicLocError
+        if canPrint:
+            print "Graphic location is off by"
+            print GraphicLocError
     else:
-        print "Graphic location is right"
+        if canPrint:
+            print "Graphic location is right"
     vx = vx + PECsection4  # Section 4 is 3 bytes giving graphic offset--going to calculate that in a little bit
 
     vx = vx + PECsection5 + PECsection6 + PECsection7  # Size data and other data: 15 bytes
 
     StitchStartLocError = len(vx) - pecstartValue - StitchStartOffset
     if StitchStartLocError:
-        print "Stitch start location is off by"
-        print StitchStartLocError
+        if canPrint:
+            print "Stitch start location is off by"
+            print StitchStartLocError
     else:
-        print "Stitch start location is right"
+        if canPrint:
+            print "Stitch start location is right"
 
     vx = vx + PECsection8  # This is the stitch displacement data
     vx = vx + PECsection9  # This is the end of stitch signal
 
     for i in range(len(PECtoolongs)):  # Defined in PECsection 8 calculation
         if PECtoolongs[i]:
-            print "Stitch", i / 2, "is >", PECtoolongs[i] / 10, "mm long, but max length is 6.3 mm"
+            if canPrint:
+                print "Stitch", i / 2, "is >", PECtoolongs[i] / 10, "mm long, but max length is 6.3 mm"
 
     graphic = len(vx) - pecstartValue - StitchEndOffset  # this is how graphic is defined
     # now calculate LSB, middle and MSB of graphic to plug in to graphic location
@@ -591,6 +623,9 @@ def make_pes(path, filename, new_pts):
 
     vx = np.array(vx)
 
-    vx.astype('uint8').tofile(path + filename)
+    f=open(path + filename, 'wb')
+    vx.astype('uint8').tofile(f)
+    f.close()
+
 
     return True
