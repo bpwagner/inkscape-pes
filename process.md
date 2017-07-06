@@ -21,19 +21,19 @@ Copy and paste the octagon shape that is in the octagon.svg file in the process_
 Inkscape will fit the octagon to the path using the Extensions->Generate from Path->Scatter command.
 Select the octagon and the star path and click the command.
 
-![](process_images\scatter.jpg)
-![](process_images\scatter2.jpg)
-![](process_images\scatter3.jpg)
+![](process_images/scatter.jpg)
+![](process_images/scatter2.jpg)
+![](process_images/scatter3.jpg)
 
 Finally, you may want to move/rotate the octagons so they fit your path the best.  You may have to Object->ungroup first.
 
-![](process_images\scatter4.jpg)
+![](process_images/scatter4.jpg)
 
 ### Step 3
 
 Print a bunch of octagon pegs using a 3D printer.  The file is OctPegs.stl in this repository.  These pegs are reusable so print a lot!
 
-![](process_images\pegs3D.jpg)
+![](process_images/pegs3D.jpg)
 
 ### Step 4
 
@@ -56,21 +56,21 @@ I am using a Full Spectrum Laser and it works well for this application.
 
 A similar process to this way prototyped by Dr. Cindy Harnett and {name} by creating a 3D printed plate to hold a fiber on on a sticky embroidery backer prior to stitching.  
 
-![](process_images\threadONtemplate.jpg)
+![](process_images/threadONtemplate.jpg)
 
-![](process_images\Sticky4.jpg)
+![](process_images/Sticky4.jpg)
 
 ## New Prototypes
 
 Our new process utilizes 3D printing and laser cutting to layout the fiber for stitching.  It also uses Inkscape as a CAD program to create files that can be used for this process.  Below are some pictures of early protoypes of the new process.
 
 
-![](process_images\pegs1.jpg)
+![](process_images/pegs1.jpg)
 3D printed octagonal pegs to hold fiber.
 
-![](process_images\pegs2.jpg)
+![](process_images/pegs2.jpg)
 
-![](process_images\pegs3.jpg) This one used pegs made from 3D printer filament to hold the fiber.  It did not work out very well.
+![](process_images/pegs3.jpg) This one used pegs made from 3D printer filament to hold the fiber.  It did not work out very well.
 
 
 
