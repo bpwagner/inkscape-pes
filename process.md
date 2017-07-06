@@ -65,12 +65,12 @@ A similar process to this way prototyped by Dr. Cindy Harnett and {name} by crea
 Our new process utilizes 3D printing and laser cutting to layout the fiber for stitching.  It also uses Inkscape as a CAD program to create files that can be used for this process.  Below are some pictures of early protoypes of the new process.
 
 
-![](process_images/pegs1.jpg)
+![](process_images/pegs1.JPG)
 3D printed octagonal pegs to hold fiber.
 
-![](process_images/pegs2.jpg)
+![](process_images/pegs2.JPG)
 
-![](process_images/pegs3.jpg) This one used pegs made from 3D printer filament to hold the fiber.  It did not work out very well.
+![](process_images/pegs3.JPG) This one used pegs made from 3D printer filament to hold the fiber.  It did not work out very well.
 
 
 
