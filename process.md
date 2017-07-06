@@ -16,7 +16,7 @@ Use Inkscape to create a stitch design using the directions in README.md.  Add r
 
 Copy and paste the octagon shape that is in the octagon.svg file in the process_example folder into your inkscape file (in our case, the star file).  At some point, creating these octagons will become part of the inkscape extension.  This octagon shape has sides that are exactly 10mm in length and this matches the 3D printed pegs.  
 
-![](images\star_octo.jpg)
+![star](images\star_octo.jpg)
 
 Inkscape will fit the octagon to the path using the Extensions->Generate from Path->Scatter command.
 Select the octagon and the star path and click the command.
