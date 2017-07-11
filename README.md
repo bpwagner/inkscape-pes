@@ -8,6 +8,8 @@ This is software for an inkscape extension to generate Brother embroidery machin
 
 Inkscape is an open source vector drawing program.  You can download and use it for free here: [https://inkscape.org/en/](https://inkscape.org/en/)
 
+Also see process.md to see further instructions.
+
 ## About
 
 This extension was written by Brian Wagner during the spring and summer of 2017 for a project at the University of Louisville led by Dr. Cindy Harnett.  Its purpose is to allow the user to design a path (or zigzag) that needs to be sewn using an embroidery machine.  This process will allow the user to embed fibers and tendons on fabric to facilitate soft robotics manufacturing.
