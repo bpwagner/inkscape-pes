@@ -37,14 +37,48 @@ Print a bunch of octagon pegs using a 3D printer.  The file is OctPegs.stl in th
 
 ### Step 4
 
-Prepare the laser cutter!  At this point use your laser to cut a 3mm (1/8") piece of plywood or acrylic to be a template for the octagons.  You may have to change colors to suit your laser, but I cut out all the red octagons.  I also engrave (don't cut all the way through) the black lines for easy inspection.  
+Prepare the laser cutter!  At this point use your laser to cut a 3mm (1/8") piece of plywood or acrylic to be a template for the octagons.  You may have to change colors to suit your laser, but I cut out all the red octagons.  I also engrave (don't cut all the way through) the black lines for easy inspection.  I am using a Full Spectrum Laser and it works well for this application.
+
+![](process_images/IMG_7800.jpg) 
+Laser finished cutting wooden template
 
 Next cut all the green ellipses on the sticky embroidery backer paper.  Also cut the registration marks because you will need them later.  I am not cutting the star because that would mess up the paper.  Also, make sure your paper is upside-down because you will need the sticky side up for the next step.  Think about what you want before you cut!
 
-I am using a Full Spectrum Laser and it works well for this application.
+![](process_images/IMG_7801.jpg)
 
 
+![](process_images/IMG_7802.jpg)
+Pegs, template and fiber ready for layout.
 
+![](process_images/IMG_7803.jpg)
+pegs installed
+
+![](process_images/IMG_7804.jpg) 
+Embroidery backer installed
+
+![](process_images/IMG_7805.jpg)
+Protective side removed to expose sticky surface.
+
+![](process_images/IMG_7806.jpg)
+Fiber held in place by pegs.  Manually stick fiber to sticky embroidery backer.
+
+![](process_images/IMG_7807.jpg)
+Protective cover installed to hold fiber in place.
+
+![](process_images/IMG_7808.jpg)
+Removed from template and pegs
+
+![](process_images/IMG_7809.jpg)
+Installed on embroidery hoop.
+
+![](process_images/IMG_7810.jpg)
+Close up.
+
+
+### Step 5.
+Install the hoop on the embroidery machine.
+
+**Further instructions coming soon!**
 
 
 
@@ -60,7 +94,7 @@ A similar process to this way prototyped by Dr. Cindy Harnett and {name} by crea
 
 ![history](process_images/Sticky4.jpg)
 
-## New Prototypes
+## Early Prototypes of New Process
 
 Our new process utilizes 3D printing and laser cutting to layout the fiber for stitching.  It also uses Inkscape as a CAD program to create files that can be used for this process.  Below are some pictures of early protoypes of the new process.
 
